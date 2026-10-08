@@ -15,6 +15,11 @@ const icon = (name, className = 'h-5 w-5') => {
     chevron: '<path d="m15 18-6-6 6-6"/>',
     search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/>',
     bell: '<path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/>',
+    revenue: '<path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>',
+    orders: '<circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/>',
+    conversion: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+    trendUp: '<path d="m3 17 6-6 4 4 8-8"/><path d="M15 7h6v6"/>',
+    trendDown: '<path d="m3 7 6 6 4-4 8 8"/><path d="M15 17h6v-6"/>',
   }
 
   return `<svg class="${className} shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name]}</svg>`
@@ -25,6 +30,49 @@ const navigation = [
   { label: 'Analytics', icon: 'analytics' },
   { label: 'Customers', icon: 'customers' },
   { label: 'Settings', icon: 'settings' },
+]
+
+const stats = [
+  {
+    label: 'Total Revenue',
+    value: '$48,294',
+    change: '+12.8%',
+    comparison: 'vs. last month',
+    icon: 'revenue',
+    trendIcon: 'trendUp',
+    trend: 'up',
+    iconColor: 'bg-indigo-50 text-indigo-600',
+  },
+  {
+    label: 'Active Users',
+    value: '2,420',
+    change: '+8.2%',
+    comparison: 'vs. last month',
+    icon: 'customers',
+    trendIcon: 'trendUp',
+    trend: 'up',
+    iconColor: 'bg-sky-50 text-sky-600',
+  },
+  {
+    label: 'New Orders',
+    value: '1,245',
+    change: '-2.4%',
+    comparison: 'vs. last month',
+    icon: 'orders',
+    trendIcon: 'trendDown',
+    trend: 'down',
+    iconColor: 'bg-amber-50 text-amber-600',
+  },
+  {
+    label: 'Conversion Rate',
+    value: '3.62%',
+    change: '+0.6%',
+    comparison: 'vs. last month',
+    icon: 'conversion',
+    trendIcon: 'trendUp',
+    trend: 'up',
+    iconColor: 'bg-emerald-50 text-emerald-600',
+  },
 ]
 
 document.querySelector('#app').innerHTML = `
@@ -104,7 +152,40 @@ document.querySelector('#app').innerHTML = `
         </div>
       </header>
 
-      <main id="dashboard-content" class="min-h-0 flex-1" aria-label="Dashboard content"></main>
+      <main id="dashboard-content" class="min-h-0 flex-1 p-4 sm:p-6 lg:p-8" aria-label="Dashboard content">
+        <section aria-labelledby="stats-heading">
+          <div class="mb-6">
+            <h1 id="stats-heading" class="text-xl font-semibold tracking-tight text-slate-900">Dashboard overview</h1>
+            <p class="mt-1 text-sm text-slate-500">A quick look at your key metrics.</p>
+          </div>
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            ${stats
+              .map(
+                ({ label, value, change, comparison, icon: statIcon, trendIcon, trend, iconColor }) => `
+                  <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm shadow-slate-200/40">
+                    <div class="flex items-start justify-between gap-4">
+                      <div class="min-w-0">
+                        <h2 class="text-sm font-medium text-slate-500">${label}</h2>
+                        <p class="mt-3 text-3xl font-semibold tracking-tight text-slate-900">${value}</p>
+                      </div>
+                      <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${iconColor}" aria-hidden="true">
+                        ${icon(statIcon, 'h-5 w-5')}
+                      </span>
+                    </div>
+                    <div class="mt-4 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs">
+                      <span class="inline-flex items-center gap-0.5 font-semibold ${trend === 'up' ? 'text-emerald-600' : 'text-rose-600'}">
+                        ${icon(trendIcon, 'h-3.5 w-3.5')}
+                        ${change}
+                      </span>
+                      <span class="text-slate-400">${comparison}</span>
+                    </div>
+                  </article>
+                `,
+              )
+              .join('')}
+          </div>
+        </section>
+      </main>
     </div>
   </div>
 `
