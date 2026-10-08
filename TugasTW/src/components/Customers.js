@@ -1,4 +1,5 @@
 import { icon } from '../utils/icons.js'
+import { formatCurrency } from '../utils/preferences.js'
 
 const customers = [
   { name: 'Dewi Lestari', email: 'dewi.lestari@gmail.com', company: 'Nusa Kreatif', joined: '12 Agu 2025', orders: 18, spent: 12450000, status: 'Aktif' },
@@ -16,9 +17,6 @@ const statusClasses = {
   Menunggu: 'bg-amber-50 text-amber-700 dark:bg-amber-400/10 dark:text-amber-300',
   'Tidak aktif': 'bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300',
 }
-
-const formatCurrency = (amount) =>
-  new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(amount)
 
 const escapeHtml = (value) =>
   String(value).replace(/[&<>"']/g, (character) => {

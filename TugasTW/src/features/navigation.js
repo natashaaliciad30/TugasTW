@@ -35,6 +35,7 @@ const setActiveNavigation = (page) => {
 
 export const initNavigation = () => {
   const content = document.querySelector('#dashboard-content')
+  let cleanupCurrentPage
 
   const renderCurrentPage = () => {
     const page = window.location.hash.slice(1) || 'dasbor'
@@ -63,9 +64,10 @@ export const initNavigation = () => {
     const currentPage = pages[page]
     if (!currentPage) return
 
+    cleanupCurrentPage?.()
     content.innerHTML = currentPage.render()
     content.setAttribute('aria-label', currentPage.label)
-    currentPage.initialize?.()
+    cleanupCurrentPage = currentPage.initialize?.()
     setActiveNavigation(page)
   }
 

@@ -1,5 +1,6 @@
 import { stats } from '../data/dashboardData.js'
 import { icon } from '../utils/icons.js'
+import { formatCurrency } from '../utils/preferences.js'
 
 export const renderStatsCards = () => `
   <section aria-labelledby="stats-heading">
@@ -10,12 +11,12 @@ export const renderStatsCards = () => `
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
       ${stats
         .map(
-          ({ label, value, change, comparison, icon: statIcon, trendIcon, trend, iconColor }) => `
+          ({ label, value, format, change, comparison, icon: statIcon, trendIcon, trend, iconColor }) => `
             <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm shadow-slate-200/40 dark:border-slate-800 dark:bg-slate-900 dark:shadow-none">
               <div class="flex items-start justify-between gap-4">
                 <div class="min-w-0">
                   <h2 class="text-sm font-medium text-slate-500 dark:text-slate-400">${label}</h2>
-                  <p class="mt-3 text-3xl font-semibold tracking-tight text-slate-900 dark:text-white">${value}</p>
+                  <p class="mt-3 text-3xl font-semibold tracking-tight text-slate-900 dark:text-white">${format === 'currency' ? formatCurrency(value) : value}</p>
                 </div>
                 <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${iconColor} dark:bg-slate-800 dark:text-indigo-300" aria-hidden="true">
                   ${icon(statIcon, 'h-5 w-5')}

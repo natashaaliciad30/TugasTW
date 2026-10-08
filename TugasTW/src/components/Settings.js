@@ -1,3 +1,12 @@
+import {
+  formatCurrency,
+  formatWorkspaceTime,
+  getCurrencyRateNote,
+  getDashboardPreferences,
+  getTimeZoneLabel,
+  dashboardPreferencesStorageKey,
+} from '../utils/preferences.js'
+
 export const renderSettings = () => `
   <section aria-labelledby="settings-heading">
     <div class="mb-6">
@@ -28,6 +37,15 @@ export const renderSettings = () => `
               <option value="SGD">Dolar Singapura (SGD)</option>
             </select>
           </label>
+        </div>
+        <div class="mt-5 rounded-xl bg-slate-50 p-4 dark:bg-slate-800/70">
+          <p class="text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">Pratinjau preferensi</p>
+          <p id="settings-currency-preview" class="mt-2 text-lg font-semibold text-slate-900 dark:text-white"></p>
+          <p id="settings-currency-rate-note" class="mt-1 text-xs text-slate-500 dark:text-slate-400"></p>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">
+            Waktu saat ini (<span id="settings-timezone-label"></span>):
+            <time id="settings-time-preview" class="font-medium tabular-nums text-slate-800 dark:text-slate-100"></time>
+          </p>
         </div>
       </section>
 
@@ -64,21 +82,6 @@ export const renderSettings = () => `
   </section>
 `
 
-const settingsStorageKey = 'orbit-settings'
-
-const readSettings = () => {
-  try {
-    const storedSettings = localStorage.getItem(settingsStorageKey)
-    if (!storedSettings) return {}
-
-    const settings = JSON.parse(storedSettings)
-    return settings && typeof settings === 'object' && !Array.isArray(settings) ? settings : {}
-  } catch (error) {
-    console.warn('Preferensi pengaturan tidak dapat dibaca dari penyimpanan lokal.', error)
-    return {}
-  }
-}
-
 export const initSettings = () => {
   const form = document.querySelector('#settings-form')
   if (!form) return
@@ -88,16 +91,30 @@ export const initSettings = () => {
   const weeklySummary = document.querySelector('#settings-weekly-summary')
   const transactionUpdates = document.querySelector('#settings-transaction-updates')
   const feedback = document.querySelector('#settings-feedback')
-  const savedSettings = readSettings()
+  const currencyPreview = document.querySelector('#settings-currency-preview')
+  const currencyRateNote = document.querySelector('#settings-currency-rate-note')
+  const timeZoneLabel = document.querySelector('#settings-timezone-label')
+  const timePreview = document.querySelector('#settings-time-preview')
+  const savedSettings = getDashboardPreferences()
 
-  if (['Asia/Jakarta', 'Asia/Makassar', 'Asia/Jayapura'].includes(savedSettings.timezone)) {
-    timezone.value = savedSettings.timezone
-  }
-  if (['IDR', 'USD', 'SGD'].includes(savedSettings.currency)) {
-    currency.value = savedSettings.currency
-  }
+  timezone.value = savedSettings.timeZone
+  currency.value = savedSettings.currency
   weeklySummary.checked = savedSettings.weeklySummary === true
   transactionUpdates.checked = savedSettings.transactionUpdates === true
+
+  const updatePreviews = () => {
+    const selectedCurrency = currency.value
+    const selectedTimeZone = timezone.value
+    currencyPreview.textContent = formatCurrency(48294000, selectedCurrency)
+    currencyRateNote.textContent = getCurrencyRateNote(selectedCurrency)
+    timeZoneLabel.textContent = getTimeZoneLabel(selectedTimeZone)
+    timePreview.textContent = formatWorkspaceTime(new Date(), selectedTimeZone)
+  }
+
+  currency.addEventListener('change', updatePreviews)
+  timezone.addEventListener('change', updatePreviews)
+  updatePreviews()
+  const previewTimer = window.setInterval(updatePreviews, 1000)
 
   form.addEventListener('submit', (event) => {
     event.preventDefault()
@@ -110,13 +127,16 @@ export const initSettings = () => {
     }
 
     try {
-      localStorage.setItem(settingsStorageKey, JSON.stringify(settings))
+      localStorage.setItem(dashboardPreferencesStorageKey, JSON.stringify(settings))
       feedback.textContent = 'Pengaturan berhasil disimpan di perangkat ini.'
       feedback.className = 'text-sm text-emerald-600 dark:text-emerald-400'
+      window.dispatchEvent(new CustomEvent('orbit-settings-updated'))
     } catch (error) {
       console.error('Pengaturan tidak dapat disimpan ke penyimpanan lokal.', error)
       feedback.textContent = 'Pengaturan gagal disimpan. Periksa penyimpanan browser Anda.'
       feedback.className = 'text-sm text-rose-600 dark:text-rose-400'
     }
   })
+
+  return () => window.clearInterval(previewTimer)
 }

@@ -8,7 +8,8 @@ export const navigationItems = [
 export const stats = [
   {
     label: 'Total Pendapatan',
-    value: 'Rp48.294.000',
+    value: 48294000,
+    format: 'currency',
     change: '+12,8%',
     comparison: 'dibanding bulan lalu',
     icon: 'revenue',

@@ -1,5 +1,6 @@
 import { statusStyles, transactions } from '../data/dashboardData.js'
 import { icon } from '../utils/icons.js'
+import { formatCurrency, getDashboardPreferences } from '../utils/preferences.js'
 
 const pageSize = 5
 
@@ -117,7 +118,7 @@ export const initTransactionsTable = () => {
                   </div>
                 </td>
                 <td class="whitespace-nowrap px-5 py-4 text-sm text-slate-600 dark:text-slate-300">${escapeHtml(date)}</td>
-                <td class="whitespace-nowrap px-5 py-4 text-sm font-medium text-slate-900 dark:text-slate-100">${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(amount)}</td>
+                <td class="whitespace-nowrap px-5 py-4 text-sm font-medium text-slate-900 dark:text-slate-100">${formatCurrency(amount)}</td>
                 <td class="whitespace-nowrap px-5 py-4 text-sm text-slate-600 dark:text-slate-300">${escapeHtml(method)}</td>
                 <td class="whitespace-nowrap px-5 py-4">
                   <span class="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ${statusStyles[status]}">${escapeHtml(status)}</span>
@@ -199,12 +200,12 @@ export const initTransactionsTable = () => {
       return `"${String(safeValue).replace(/"/g, '""')}"`
     }
     const csvRows = [
-      ['Pengguna', 'Email', 'Tanggal', 'Jumlah (Rp)', 'Metode Pembayaran', 'Status'],
+      ['Pengguna', 'Email', 'Tanggal', `Jumlah (${getDashboardPreferences().currency})`, 'Metode Pembayaran', 'Status'],
       ...getFilteredTransactions().map(({ name, email, date, amount, method, status }) => [
         name,
         email,
         date,
-        amount,
+        formatCurrency(amount),
         method,
         status,
       ]),

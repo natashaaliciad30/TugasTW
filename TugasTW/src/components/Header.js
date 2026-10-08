@@ -13,6 +13,11 @@ export const renderHeader = () => `
       </label>
     </div>
 
+    <div class="hidden shrink-0 text-right lg:block" aria-live="off">
+      <p id="workspace-clock" class="text-sm font-semibold tabular-nums text-slate-800 dark:text-slate-100"></p>
+      <p id="workspace-timezone" class="mt-0.5 text-xs text-slate-500 dark:text-slate-400"></p>
+    </div>
+
     <div class="flex shrink-0 items-center gap-2 sm:gap-4">
       <button id="theme-toggle" type="button" class="flex h-10 w-10 items-center justify-center rounded-xl text-slate-500 transition hover:bg-slate-100 hover:text-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100" aria-label="Aktifkan mode gelap" aria-pressed="false" title="Aktifkan mode gelap"></button>
       <button type="button" class="relative flex h-10 w-10 items-center justify-center rounded-xl text-slate-500 transition hover:bg-slate-100 hover:text-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100" aria-label="Notifikasi">
