@@ -4,7 +4,7 @@ const analyticsStats = [
   { label: 'Total Pengunjung', value: '24.860', change: '+12,4%', trend: 'up', icon: 'customers', color: 'text-sky-600 dark:text-sky-300' },
   { label: 'Tingkat Konversi', value: '3,62%', change: '+0,6%', trend: 'up', icon: 'conversion', color: 'text-indigo-600 dark:text-indigo-300' },
   { label: 'Durasi Rata-rata', value: '4 m 32 d', change: '+8,2%', trend: 'up', icon: 'trendUp', color: 'text-emerald-600 dark:text-emerald-300' },
-  { label: 'Bounce Rate', value: '32,4%', change: '-3,1%', trend: 'down', icon: 'trendDown', color: 'text-amber-600 dark:text-amber-300' },
+  { label: 'Rasio Pentalan', value: '32,4%', change: '-3,1%', trend: 'down', icon: 'trendDown', color: 'text-amber-600 dark:text-amber-300' },
 ]
 
 const trafficSources = [
@@ -63,7 +63,7 @@ export const renderAnalytics = () => `
         <h2 id="visitors-chart-heading" class="text-base font-semibold text-slate-900 dark:text-white">Tren Pengunjung</h2>
         <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Jumlah pengunjung unik selama 7 hari terakhir</p>
       </div>
-      <div class="overflow-hidden" role="img" aria-label="Grafik pengunjung selama tujuh hari, meningkat dari Senin hingga Minggu">
+      <div class="overflow-hidden" role="img" aria-label="Grafik pengunjung selama tujuh hari yang berfluktuasi tetapi menunjukkan kenaikan secara keseluruhan">
         <svg viewBox="0 0 800 250" class="h-52 w-full overflow-visible sm:h-64" preserveAspectRatio="none" aria-hidden="true">
           <defs>
             <linearGradient id="visitors-chart-fill" x1="0" x2="0" y1="0" y2="1">
@@ -72,8 +72,15 @@ export const renderAnalytics = () => `
             </linearGradient>
           </defs>
           <path d="M48 205H790M48 155H790M48 105H790M48 55H790" fill="none" class="stroke-slate-200 dark:stroke-slate-800" stroke-dasharray="4 6" />
-          <path d="M48 178C90 167 112 146 160 155S224 130 270 143 335 113 380 124 448 91 490 105 555 71 600 87 660 56 710 67 756 38 790 34V215H48Z" fill="url(#visitors-chart-fill)" />
-          <path d="M48 178C90 167 112 146 160 155S224 130 270 143 335 113 380 124 448 91 490 105 555 71 600 87 660 56 710 67 756 38 790 34" fill="none" stroke="#6366f1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
+          <path d="M48 168C88 158 130 136 172 139S254 160 296 153 378 108 420 112 502 132 544 126 626 75 668 82 748 108 790 101V215H48Z" fill="url(#visitors-chart-fill)" />
+          <path d="M48 168C88 158 130 136 172 139S254 160 296 153 378 108 420 112 502 132 544 126 626 75 668 82 748 108 790 101" fill="none" stroke="#6366f1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
+          <circle cx="48" cy="168" r="4" fill="#fff" stroke="#6366f1" stroke-width="2" vector-effect="non-scaling-stroke" />
+          <circle cx="172" cy="139" r="4" fill="#fff" stroke="#6366f1" stroke-width="2" vector-effect="non-scaling-stroke" />
+          <circle cx="296" cy="153" r="4" fill="#fff" stroke="#6366f1" stroke-width="2" vector-effect="non-scaling-stroke" />
+          <circle cx="420" cy="112" r="4" fill="#fff" stroke="#6366f1" stroke-width="2" vector-effect="non-scaling-stroke" />
+          <circle cx="544" cy="126" r="4" fill="#fff" stroke="#6366f1" stroke-width="2" vector-effect="non-scaling-stroke" />
+          <circle cx="668" cy="82" r="4" fill="#fff" stroke="#6366f1" stroke-width="2" vector-effect="non-scaling-stroke" />
+          <circle cx="790" cy="101" r="4" fill="#fff" stroke="#6366f1" stroke-width="2" vector-effect="non-scaling-stroke" />
           <text x="48" y="242" class="fill-slate-400 dark:fill-slate-500" font-size="12">Sen</text>
           <text x="172" y="242" text-anchor="middle" class="fill-slate-400 dark:fill-slate-500" font-size="12">Sel</text>
           <text x="296" y="242" text-anchor="middle" class="fill-slate-400 dark:fill-slate-500" font-size="12">Rab</text>
