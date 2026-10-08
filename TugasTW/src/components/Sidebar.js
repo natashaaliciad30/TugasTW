@@ -1,7 +1,7 @@
 import { navigationItems } from '../data/dashboardData.js'
 import { icon } from '../utils/icons.js'
 
-export const renderSidebar = () => `
+export const renderSidebar = (activePage = 'dasbor') => `
   <div id="sidebar-overlay" class="hidden fixed inset-0 z-30 bg-slate-950/40 md:hidden" aria-hidden="true"></div>
 
   <aside id="sidebar" class="hidden fixed inset-y-0 left-0 z-40 h-screen w-64 shrink-0 flex flex-col border-r border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 md:sticky md:top-0 md:flex">
@@ -20,9 +20,13 @@ export const renderSidebar = () => `
       <ul class="space-y-1">
         ${navigationItems
           .map(
-            ({ label, icon: iconName, active }) => `
+            ({ label, icon: iconName }) => {
+              const page = label.toLowerCase()
+              const active = page === activePage
+
+              return `
               <li>
-                <a href="#${label.toLowerCase()}" title="${label}" ${active ? 'aria-current="page"' : ''} class="sidebar-link group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
+                <a href="#${page}" data-nav-link title="${label}" ${active ? 'aria-current="page"' : ''} class="sidebar-link group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
                   active
                     ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-400/10 dark:text-indigo-300'
                     : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100'
@@ -31,7 +35,8 @@ export const renderSidebar = () => `
                   <span data-sidebar-label>${label}</span>
                 </a>
               </li>
-            `,
+            `
+            },
           )
           .join('')}
       </ul>

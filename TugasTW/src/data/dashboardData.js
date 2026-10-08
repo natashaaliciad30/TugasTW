@@ -1,5 +1,5 @@
 export const navigationItems = [
-  { label: 'Dasbor', icon: 'dashboard', active: true },
+  { label: 'Dasbor', icon: 'dashboard' },
   { label: 'Analitik', icon: 'analytics' },
   { label: 'Pelanggan', icon: 'customers' },
   { label: 'Pengaturan', icon: 'settings' },
