@@ -1,5 +1,7 @@
 import { renderAnalytics } from '../components/Analytics.js'
+import { initCustomersPage, renderCustomers } from '../components/Customers.js'
 import { renderDashboardContent } from '../components/Dashboard.js'
+import { initSettings, renderSettings } from '../components/Settings.js'
 import { initTransactionsTable } from '../components/TransactionsTable.js'
 
 const setActiveNavigation = (page) => {
@@ -36,17 +38,34 @@ export const initNavigation = () => {
 
   const renderCurrentPage = () => {
     const page = window.location.hash.slice(1) || 'dasbor'
-    if (page !== 'dasbor' && page !== 'analitik') return
-
-    if (page === 'analitik') {
-      content.innerHTML = renderAnalytics()
-      content.setAttribute('aria-label', 'Konten analitik')
-    } else {
-      content.innerHTML = renderDashboardContent()
-      content.setAttribute('aria-label', 'Konten dasbor')
-      initTransactionsTable()
+    const pages = {
+      dasbor: {
+        label: 'Konten dasbor',
+        render: renderDashboardContent,
+        initialize: initTransactionsTable,
+      },
+      analitik: {
+        label: 'Konten analitik',
+        render: renderAnalytics,
+      },
+      pelanggan: {
+        label: 'Konten pelanggan',
+        render: renderCustomers,
+        initialize: initCustomersPage,
+      },
+      pengaturan: {
+        label: 'Konten pengaturan',
+        render: renderSettings,
+        initialize: initSettings,
+      },
     }
 
+    const currentPage = pages[page]
+    if (!currentPage) return
+
+    content.innerHTML = currentPage.render()
+    content.setAttribute('aria-label', currentPage.label)
+    currentPage.initialize?.()
     setActiveNavigation(page)
   }
 
